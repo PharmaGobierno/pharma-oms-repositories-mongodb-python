@@ -33,7 +33,7 @@ class RemissionsRepository(BaseMongoDbRepository):
         limit: int,
         created_at_gt: Optional[int] = None,
         created_at_lt: Optional[int] = None,
-        tenants: Optional[List[str]] = None,
+        tenant: Optional[List[str]] = None,
         events: Optional[List[str]] = None,
     ) -> Tuple[int, List[dict]]:
         SEARCH_INDEX = "autocomplete_tracking_id_in_events_range_created_at"
@@ -51,9 +51,9 @@ class RemissionsRepository(BaseMongoDbRepository):
             if created_at_lt is not None:
                 created_at_range["lt"] = created_at_lt
         search["compound"]["filter"] = []
-        if tenants:
+        if tenant:
             search["compound"]["filter"].append(
-                {"in": {"path": "tenant_id", "value": tenants}}
+                {"in": {"path": "tenant_id", "value": tenant}}
             )
         if events:
             search["compound"]["filter"].append(

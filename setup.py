@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf8") as fh:
 
 requirements_list = []
 
-LIB_NAME: str = "pharama-oms-repositories-mongodb-python"
+LIB_NAME: str = "pharma-oms-repositories-mongodb-python"
 
 setuptools.setup(
     name=LIB_NAME,
