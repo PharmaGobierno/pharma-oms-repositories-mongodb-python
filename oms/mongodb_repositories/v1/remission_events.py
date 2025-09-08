@@ -27,3 +27,22 @@ class RemissionEventsRepository(BaseMongoDbRepository):
             limit=(limit or self.DEFAULT_QUERY_LIMIT),
         )
         return documents_count, map(lambda item: item, documents_cursor)
+    
+
+    def get_by_tracking_id_and_event_id(
+        self,
+        *,
+        tracking_id: str,
+        event_id: str,
+        tenant: Optional[List[str]] = None,
+        projection: Optional[Union[list, dict]] = None,
+    ) -> Optional[dict]:
+        filter: Dict[str, Any] = {"remission.tracking_id": tracking_id, "_id": event_id}
+        
+        if tenant:
+            filter.update({"tenant_id": {"$in": tenant}})
+        document = self._collection.find_one(
+            filter,
+            projection=projection)
+        return document
+
