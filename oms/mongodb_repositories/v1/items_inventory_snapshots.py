@@ -8,6 +8,7 @@ class ItemsInventorySnapshotsRepository(BaseMongoDbRepository):
         self,
         sku: str,
         *,
+        quantity_gte: Optional[int] = None,
         company: Optional[str] = None,
         project: Optional[str] = None,
         sort: Optional[List[Tuple[str, int]]] = None,
@@ -19,6 +20,8 @@ class ItemsInventorySnapshotsRepository(BaseMongoDbRepository):
             filter.update({"company": company})
         if project:
             filter.update({"project": project})
+        if quantity_gte:
+            filter.update({"lote_quantity": {"$gte": quantity_gte}})
         documents_count: int = self._collection.count_documents(filter)
         documents_cursor = self._collection.find(
             filter,
